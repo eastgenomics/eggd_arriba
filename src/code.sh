@@ -45,8 +45,8 @@ sample_name=$(echo $bams[0] | cut -d '_' -f 1)
 arriba \
     -x /home/dnanexus/input_bams \
     -o /home/dnanexus/out/${sample_name}_fusions.tsv -O /home/dnanexus/out/${sample_name}_fusions.discarded.tsv \
-    -a GRCh38.fa -g GENCODE38.gtf \
-    -b database/blacklist_hg38_GRCh38_v2.4.0.tsv.gz -k database/known_fusions_hg38_GRCh38_v2.4.0.tsv.gz -t database/known_fusions_hg38_GRCh38_v2.4.0.tsv.gz -p database/protein_domains_hg38_GRCh38_v2.4.0.gff3
+    -a /home/dnanexus/genome_lib/${lib_dir}/ctat_genome_lib_build_dir/ref_genome.fa -g /home/dnanexus/genome_lib/${lib_dir}/ctat_genome_lib_build_dir/ref_annot.gtf \
+    -b /home/dnanexus/arriba_v2.4.0/database/blacklist_hg38_GRCh38_v2.4.0.tsv.gz -k /home/dnanexus/arriba_v2.4.0/database/known_fusions_hg38_GRCh38_v2.4.0.tsv.gz -t /home/dnanexus/arriba_v2.4.0/database/known_fusions_hg38_GRCh38_v2.4.0.tsv.gz -p /home/dnanexus/arriba_v2.4.0/database/protein_domains_hg38_GRCh38_v2.4.0.gff3
 
 # Move output files to /out directory to be uploaded
 mv /home/dnanexus/out/${sample_name}_fusions.tsv /home/dnanexus/out/output_fusions_files
