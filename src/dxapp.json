@@ -1,0 +1,82 @@
+{
+  "name": "eggd_arriba",
+  "title": "eggd_arriba",
+  "summary": "App which runs Arriba v2.4.0. It identifies fusions using known 'rescue list' fusion pairs, plus predictions from STAR-Fusion",
+  "dxapi": "1.0.0",
+  "version": "1.0.0",
+  "inputSpec": [
+    {
+      "name": "arriba_tar",
+      "label": "arriba_tar",
+      "class": "file",
+      "optional": false,
+      "help": "File ID of Arriba tar file in DNAnexus"
+    },
+    {
+      "name": "bam_file",
+      "label": "bam_file",
+      "class": "file",
+      "optional": false,
+      "patterns": [
+        "*.bam"
+      ],
+      "help": "Fusions file for a single sample from eggd_starfusion"
+    }
+    {
+      "name": "genome_lib",
+      "label": "genome_lib",
+      "class": "file",
+      "optional": false,
+      "patterns": [
+        "*.gz"
+      ],
+      "help": "A CTAT genome library, which is a reference file bundle required by Trinity CTAT tools"
+    }
+  ],
+  "outputSpec": [
+    {
+      "name": "arriba_full",
+      "label": "arriba_full",
+      "class": "file",
+      "optional": false,
+      "help": "Arriba full output file"
+    },
+    {
+      "name": "arriba_discarded",
+      "label": "arriba_discarded",
+      "class": "file",
+      "optional": false,
+      "help": "Arriba output file with discarded fusions"
+    }
+  ],
+  "runSpec": {
+    "timeoutPolicy": {
+      "*": {
+        "hours": 12
+      }
+    },
+    "interpreter": "bash",
+    "file": "src/code.sh",
+    "release": "20.04",
+    "distribution": "Ubuntu",
+    "version": "0"
+  },
+  "developers":[
+    "org-emee_1"
+  ],
+  "authorizedUsers": [
+    "org-emee_1"
+  ],
+  "access": {
+    "project": "CONTRIBUTE"
+  },
+  "regionalOptions": {
+    "aws:eu-central-1": {
+      "systemRequirements": {
+        "*": {
+          "instanceType": "mem1_ssd1_v2_x36"
+        }
+      }
+    }
+  }
+}
