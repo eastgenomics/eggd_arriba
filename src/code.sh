@@ -22,7 +22,10 @@ find ~/in/input_bams -type f -name "*" -print0 | xargs -0 -I {} mv {} ~/input_ba
 
 # download all inputs, untar plug-n-play resources, and set PATH to arriba directory
 # mark-section "Download inputs and set up initial directories and values"
-tar -xzf /home/dnanexus/in/arriba_tar/*.tar.gz -C /home/dnanexus/ --one-top-level=arriba
+if ! tar xvzf /home/dnanexus/in/genome_lib/*.tar.gz -C /home/dnanexus/genome_lib; then
+    echo "Error: Failed to extract genome library"
+    exit 1
+fi
 cd arriba_v2.4.0 && make
 cd ..
 export PATH=$PATH:/home/dnanexus/arriba_v2.4.0

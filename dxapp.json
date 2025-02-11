@@ -20,7 +20,7 @@
       "patterns": [
         "*.bam"
       ],
-      "help": "Fusions file for a single sample from eggd_starfusion"
+      "help": "RNA-Seq BAM file for fusion detection"
     },
     {
       "name": "genome_lib",
