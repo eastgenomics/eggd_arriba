@@ -1,7 +1,7 @@
 {
   "name": "eggd_arriba",
   "title": "eggd_arriba",
-  "summary": "App which runs Arriba v2.4.0. It identifies fusions using known 'rescue list' fusion pairs, plus predictions from STAR-Fusion",
+  "summary": "App which runs Arriba.",
   "dxapi": "1.0.0",
   "version": "1.0.0",
   "inputSpec": [
@@ -45,7 +45,7 @@
       "name": "arriba_discarded",
       "label": "arriba_discarded",
       "class": "file",
-      "optional": false,
+      "optional": true,
       "help": "Arriba output file with discarded fusions"
     }
   ],
