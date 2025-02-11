@@ -7,6 +7,7 @@ set -exo pipefail
 dx-download-all-inputs
 
 mkdir -p /home/dnanexus/out/output_fusions_files \
+    /home/dnanexus/genome_lib \
     /home/dnanexus/out/output_discarded_fusions \
     /home/dnanexus/out/logs
 
