@@ -13,8 +13,8 @@
       "help": "File ID of Arriba tar file in DNAnexus"
     },
     {
-      "name": "bam_file",
-      "label": "bam_file",
+      "name": "bam",
+      "label": "bam",
       "class": "file",
       "optional": false,
       "patterns": [

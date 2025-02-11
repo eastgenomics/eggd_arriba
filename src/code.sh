@@ -35,14 +35,23 @@ sample_name=$(echo $bam_file | cut -d '_' -f 1)
 
 # Run arriba
 arriba \
-    -x /home/dnanexus/in/bam_file/ \
+    -x /home/dnanexus/in/bam/ \
     -o /home/dnanexus/out/${sample_name}_fusions.tsv -O /home/dnanexus/out/${sample_name}_fusions.discarded.tsv \
     -a /home/dnanexus/genome_lib/${lib_dir}/ctat_genome_lib_build_dir/ref_genome.fa -g /home/dnanexus/genome_lib/${lib_dir}/ctat_genome_lib_build_dir/ref_annot.gtf \
-    -b //home/dnanexus/arriba/database/blacklist_hg38_GRCh38_v2.4.0.tsv.gz -k /home/dnanexus/arriba/database/known_fusions_hg38_GRCh38_v2.4.0.tsv.gz -t /home/dnanexus/arriba/database/known_fusions_hg38_GRCh38_v2.4.0.tsv.gz -p /home/dnanexus/arriba/database/protein_domains_hg38_GRCh38_v2.4.0.gff3
+    -b //home/dnanexus/arriba/database/blacklist_hg38_GRCh38_v*.tsv.gz -k /home/dnanexus/arriba/database/known_fusions_hg38_GRCh38_v*.tsv.gz -t /home/dnanexus/arriba/database/known_fusions_hg38_GRCh38_v*.tsv.gz -p /home/dnanexus/arriba/database/protein_domains_hg38_GRCh38_v*.gff3
 
-# Move output files to /out directory to be uploaded
-mv /home/dnanexus/out/${sample_name}_fusions.tsv /home/dnanexus/out/output_fusions_files
-mv /home/dnanexus/out/${sample_name}_fusions.discarded.tsv /home/dnanexus/out/output_discarded_fusions
+# Move output files with error handling
+for file in "${sample_name}_fusions.tsv" "${sample_name}_fusions.discarded.tsv"; do
+    if [ ! -f "/home/dnanexus/out/$file" ]; then
+        echo "Error: Expected output file not found: $file"
+        exit 1
+    fi
+done
+
+if ! mv /home/dnanexus/out/${sample_name}_fusions.tsv /home/dnanexus/out/output_fusions_files || \
+   ! mv /home/dnanexus/out/${sample_name}_fusions.discarded.tsv /home/dnanexus/out/output_discarded_fusions; then
+    echo "Error: Failed to move output files"
+    exit 1
 
 for f in Log*; do mv "$f" "${sample_name}.$f"; done
 mv /home/dnanexus/${sample_name}.Log* /home/dnanexus/out/logs
