@@ -20,7 +20,7 @@
       "patterns": [
         "*.bam"
       ],
-      "help": "RNA-Seq BAM file for fusion detection"
+      "help": "RNA-Seq BAM file from starfusion containing chimeric junctions for fusion detection"
     },
     {
       "name": "genome_lib",
