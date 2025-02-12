@@ -17,12 +17,14 @@ tar xvzf /home/dnanexus/in/genome_lib/*.tar.gz -C /home/dnanexus/genome_lib
 # Extract CTAT library filename
 lib_dir=$(find /home/dnanexus/genome_lib -type d -name "*" -mindepth 1 -maxdepth 1 | rev | cut -d'/' -f-1 | rev)
 
-if ! tar -xzf /home/dnanexus/in/arriba_tar/*.tar.gz -C /home/dnanexus/ --one-top-level=arriba; then
+if ! tar -xzf /home/dnanexus/in/arriba_tar/*.tar.gz -C /home/dnanexus/ --one-top-level=arriba --strip-components=1; then
     echo "Error: Failed to extract arriba library"
     exit 1
 fi
+ls
 
-cd arriba && make
+cd /home/dnanexus/arriba/
+make
 cd ..
 export PATH=$PATH:/home/dnanexus/arriba
 
