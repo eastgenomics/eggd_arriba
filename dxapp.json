@@ -10,7 +10,7 @@
       "label": "arriba_tar",
       "class": "file",
       "optional": false,
-      "help": "File ID of Arriba tar file in DNAnexus"
+      "help": "Arriba docker tar file"
     },
     {
       "name": "bam",
