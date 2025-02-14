@@ -26,7 +26,7 @@ sample_name=$(echo $bam_prefix | cut -d '.' -f 1)
 
 # Run arriba
 
-docker_cmd="arriba_v*/arriba -x /data/in/bam/$bam_name \
+docker_cmd="arriba_v*/arriba -x /data/in/bam/$bam_name -c /data/in/chimeric/$chimeric_name\
     -o /data/out/output_fusions_files/${sample_name}_fusions.tsv -O /data/out/output_discarded_fusions/${sample_name}_fusions.discarded.tsv \
     -g /data/genome_lib/${lib_dir}/ctat_genome_lib_build_dir/ref_annot.gtf -a /data/genome_lib/${lib_dir}/ctat_genome_lib_build_dir/ref_genome.fa  \
     -b /arriba_v*/database/blacklist_hg38_GRCh38_v*.tsv.gz \
@@ -34,7 +34,11 @@ docker_cmd="arriba_v*/arriba -x /data/in/bam/$bam_name \
     -t /arriba_v*/database/known_fusions_hg38_GRCh38_v*.tsv.gz \
     -p /arriba_v*/database/protein_domains_hg38_GRCh38_v*.gff3"
 
-time docker run -v /home/dnanexus:/data $DOCKER_IMAGE_ID  /bin/bash -c "eval $docker_cmd"
+time docker run --rm --security-opt=no-new-privileges \
+    --cap-drop=ALL \
+    --network=none \
+    -v /home/dnanexus:/data:ro \
+    $DOCKER_IMAGE_ID /bin/bash -c "eval $docker_cmd"
 
 for f in Log*; do
     mv "$f" "${sample_name}.$f";
