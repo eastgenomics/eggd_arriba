@@ -26,9 +26,11 @@ sample_name=$(echo $bam_prefix | cut -d '.' -f 1)
 
 # Run arriba
 
-docker_cmd="arriba_v*/arriba -x /data/in/bam/$bam_name -c /data/in/chimeric/$chimeric_name\
-    -o /data/out/output_fusions_files/${sample_name}_fusions.tsv -O /data/out/output_discarded_fusions/${sample_name}_fusions.discarded.tsv \
-    -g /data/genome_lib/${lib_dir}/ctat_genome_lib_build_dir/ref_annot.gtf -a /data/genome_lib/${lib_dir}/ctat_genome_lib_build_dir/ref_genome.fa  \
+docker_cmd="arriba_v*/arriba -x /data/in/bam/$bam_name \
+    -o /data/out/output_fusions_files/${sample_name}_fusions.tsv \
+    -O /data/out/output_discarded_fusions/${sample_name}_fusions.discarded.tsv \
+    -g /data/genome_lib/${lib_dir}/ctat_genome_lib_build_dir/ref_annot.gtf \
+    -a /data/genome_lib/${lib_dir}/ctat_genome_lib_build_dir/ref_genome.fa  \
     -b /arriba_v*/database/blacklist_hg38_GRCh38_v*.tsv.gz \
     -k /arriba_v*/database/known_fusions_hg38_GRCh38_v*.tsv.gz \
     -t /arriba_v*/database/known_fusions_hg38_GRCh38_v*.tsv.gz \
