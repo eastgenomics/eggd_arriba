@@ -31,6 +31,13 @@
         "*.gz"
       ],
       "help": "A CTAT genome library, which is a reference file bundle required by Trinity CTAT tools"
+    },
+    {
+      "name": "R_visual_script",
+      "label": "R_visual_script",
+      "class": "file",
+      "optional": false,
+      "help": "An R script which generates visualisations of the gene fusions."
     }
   ],
   "outputSpec": [
@@ -47,6 +54,13 @@
       "class": "file",
       "optional": true,
       "help": "Arriba output file with discarded fusions"
+    },
+    {
+      "name": "arriba_visualisations",
+      "label": "arriba_visualisations",
+      "class": "file",
+      "optional": true,
+      "help": "Arriba output file with visualisations of gene fusions"
     }
   ],
   "runSpec": {
