@@ -51,4 +51,12 @@ time docker run --rm \
     -v /home/dnanexus:/data \
     $DOCKER_IMAGE_ID /bin/bash -c "eval $docker_cmd_visualisation"
 
+if [ -f *fusions.pdf ]; then
+    echo "fusions.pdf  exists."
+    mkdir -p /data/out/arriba_visualisations/
+    mv *fusions.pdf /data/out/arriba_visualisations/
+else
+    echo "fusions.pdf does not exist"
+fi
+
 dx-upload-all-outputs
