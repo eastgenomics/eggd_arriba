@@ -40,12 +40,12 @@ time docker run --rm \
     $DOCKER_IMAGE_ID /bin/bash -c "eval $docker_cmd"
 
 docker_cmd_visualisation="arriba_v*/draw_fusions.R \
-    -f /data/out/arriba_full/${sample_name}_fusions.tsv \
-    -a /data/in/bam/$bam_name \
-    -o /data/out/arriba_visualisations/${sample_name}_fusions.pdf \
-    -a /data/genome_lib/${lib_dir}/ctat_genome_lib_build_dir/ref_annot.gtf
-    -c /arriba_v*/database/cytobands_hg19_hs37d5_GRCh37_v2.4.0.tsv
-    -p /arriba_v*/database/protein_domains_hg19_hs37d5_GRCh37_v2.4.0.gff3"
+    --fusions=/data/out/arriba_full/${sample_name}_fusions.tsv \
+    --alignments=/data/in/bam/${bam_name} \
+    --output=/data/out/arriba_visualisations/${sample_name}_fusions.pdf \
+    --annotation=/data/genome_lib/${lib_dir}/ctat_genome_lib_build_dir/ref_annot.gtf \
+    --cytobands=/arriba_v*/database/cytobands_hg19_hs37d5_GRCh37_v2.4.0.tsv \
+    --proteinDomains=/arriba_v*/database/protein_domains_hg19_hs37d5_GRCh37_v2.4.0.gff3"
 
 time docker run --rm \
     -v /home/dnanexus:/data \
