@@ -33,11 +33,11 @@
       "help": "A CTAT genome library, which is a reference file bundle required by Trinity CTAT tools"
     },
     {
-      "name": "R_visual_script",
-      "label": "R_visual_script",
-      "class": "file",
-      "optional": false,
-      "help": "An R script which generates visualisations of the gene fusions."
+      "name": "arriba_visual_script",
+      "label": "Arriba_visual_script",
+      "class": "boolean",
+      "optional": true,
+      "help": "Optional output, set to true to generate visualisations of the gene fusions."
     }
   ],
   "outputSpec": [
@@ -69,6 +69,14 @@
         "hours": 12
       }
     },
+    "assetDepends": [
+      {
+        "name": "htslib",
+        "project": "project-Fkb6Gkj433GVVvj73J7x8KbV",
+        "folder": "/app_assets/htslib/htslib_v1.15.0",
+        "version": "1.15.0"
+      }
+    ],
     "interpreter": "bash",
     "file": "src/code.sh",
     "release": "24.04",
