@@ -15,7 +15,6 @@ mkdir -p /home/dnanexus/out/arriba_full \
 # (so as to not use internet)
 sudo dpkg -i libtinfo5_6.2-0ubuntu2_amd64.deb
 sudo dpkg -i libncurses5_6.2-0ubuntu2_amd64.deb
-samtools --help
 
 # Unpack CTAT bundle file
 tar xvzf /home/dnanexus/in/genome_lib/*.tar.gz -C /home/dnanexus/genome_lib
