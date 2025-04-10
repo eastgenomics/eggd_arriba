@@ -31,6 +31,7 @@ arriba_version=$(docker run --rm -v /home/dnanexus:/data $DOCKER_IMAGE_ID /bin/b
 cytobands_file=$(docker run --rm -v /home/dnanexus:/data $DOCKER_IMAGE_ID /bin/bash -c 'ls /arriba_v*/database | grep cytobands_hg38')
 protein_domains_file=$(docker run --rm -v /home/dnanexus:/data $DOCKER_IMAGE_ID /bin/bash -c 'ls /arriba_v*/database | grep protein_domains_hg38')
 blacklist_file=$(docker run --rm -v /home/dnanexus:/data $DOCKER_IMAGE_ID /bin/bash -c 'ls / | grep blacklist_hg38_GRCh38_v')
+known_fusions=$(docker run --rm -v /home/dnanexus:/data $DOCKER_IMAGE_ID /bin/bash -c 'ls / | grep known_fusions_hg38_GRCh38_v')
 
 #Extract sample name from input_bam
 sample_name=$(echo $bam_prefix | cut -d '.' -f 1)
@@ -42,9 +43,9 @@ docker_cmd="${arriba_version}/arriba -x /data/in/bam/$bam_name \
     -g /data/genome_lib/${lib_dir}/ctat_genome_lib_build_dir/ref_annot.gtf \
     -a /data/genome_lib/${lib_dir}/ctat_genome_lib_build_dir/ref_genome.fa  \
     -b /${arriba_version}/database/${blacklist_file}\
-    -k /${arriba_version}/database/known_fusions_hg38_GRCh38_v*.tsv.gz \
-    -t /${arriba_version}/database/known_fusions_hg38_GRCh38_v*.tsv.gz \
-    -p /${arriba_version}/database/protein_domains_hg38_GRCh38_v*.gff3"
+    -k /${arriba_version}/database/${known_fusions} \
+    -t /${arriba_version}/database/${known_fusions} \
+    -p /${arriba_version}/database/${protein_domains_file}"
 
 time docker run --rm \
     -v /home/dnanexus:/data \
