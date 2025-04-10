@@ -31,6 +31,13 @@
         "*.gz"
       ],
       "help": "A CTAT genome library, which is a reference file bundle required by Trinity CTAT tools"
+    },
+    {
+      "name": "arriba_visual_script",
+      "label": "Arriba_visual_script",
+      "class": "boolean",
+      "optional": true,
+      "help": "Optional output, set to true to generate visualisations of the gene fusions."
     }
   ],
   "outputSpec": [
@@ -47,6 +54,13 @@
       "class": "file",
       "optional": true,
       "help": "Arriba output file with discarded fusions"
+    },
+    {
+      "name": "arriba_visualisations",
+      "label": "arriba_visualisations",
+      "class": "file",
+      "optional": true,
+      "help": "Arriba output file with visualisations of gene fusions"
     }
   ],
   "runSpec": {
@@ -55,9 +69,17 @@
         "hours": 12
       }
     },
+    "assetDepends": [
+      {
+        "name": "htslib",
+        "project": "project-Fkb6Gkj433GVVvj73J7x8KbV",
+        "folder": "/app_assets/htslib/htslib_v1.15.0",
+        "version": "1.15.0"
+      }
+    ],
     "interpreter": "bash",
     "file": "src/code.sh",
-    "release": "24.04",
+    "release": "20.04",
     "distribution": "Ubuntu",
     "version": "0"
   },
