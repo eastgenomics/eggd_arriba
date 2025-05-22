@@ -2,7 +2,7 @@
 
 ## What does this app do?
 
-This app detects gene fusions from STAR aligned BAM files. The BAM file used by arriba must contain split reads or discordant mates. This can be done by running STAR with parameter `--chimOutType WithinBAM`.
+This app detects gene fusions from STAR aligned BAM files. The BAM file used by arriba must contain split reads or discordant mates. This can be done by running STARaligner with parameter `--chimOutType WithinBAM`.
 
 The app also produces visualisation plots of fusions predicted.
 
