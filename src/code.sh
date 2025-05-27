@@ -30,8 +30,8 @@ DOCKER_IMAGE_ID=$(docker images --format="{{.Repository}} {{.ID}}" | grep "^uhri
 arriba_version=$(docker run --rm -v /home/dnanexus:/data $DOCKER_IMAGE_ID /bin/bash -c 'ls / | grep arriba_v')
 cytobands_file=$(docker run --rm -v /home/dnanexus:/data $DOCKER_IMAGE_ID /bin/bash -c 'ls /arriba_v*/database | grep cytobands_hg38')
 protein_domains_file=$(docker run --rm -v /home/dnanexus:/data $DOCKER_IMAGE_ID /bin/bash -c 'ls /arriba_v*/database | grep protein_domains_hg38')
-blacklist_file=$(docker run --rm -v /home/dnanexus:/data $DOCKER_IMAGE_ID /bin/bash -c 'ls / | grep blacklist_hg38_GRCh38_v')
-known_fusions=$(docker run --rm -v /home/dnanexus:/data $DOCKER_IMAGE_ID /bin/bash -c 'ls / | grep known_fusions_hg38_GRCh38_v')
+blacklist_file=$(docker run --rm -v /home/dnanexus:/data $DOCKER_IMAGE_ID /bin/bash -c 'ls /arriba_v*/database  | grep blacklist_hg38_GRCh38_v')
+known_fusions=$(docker run --rm -v /home/dnanexus:/data $DOCKER_IMAGE_ID /bin/bash -c 'ls /arriba_v*/database  | grep known_fusions_hg38_GRCh38_v')
 
 #Extract sample name from input_bam
 sample_name=$(echo $bam_prefix | cut -d '.' -f 1)
