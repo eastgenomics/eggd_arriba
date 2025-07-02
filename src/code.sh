@@ -1,7 +1,15 @@
 #!/bin/bash
 
+# prefixes all lines of commands written to stdout with datetime
+PS4='\000[$(date)]\011'
+export TZ=Europe/London
+
 # fail on any error
 set -exo pipefail
+
+# set frequency of instance usage in logs to 10 seconds
+kill $(ps aux | grep pcp-dstat | head -n1 | awk '{print $2}')
+/usr/bin/dx-dstat 10
 
 # Download all inputs from dx json
 dx-download-all-inputs
@@ -52,7 +60,7 @@ time docker run --rm \
     $DOCKER_IMAGE_ID /bin/bash -c "eval $docker_cmd"
 
 # Run the visualisation if requested by user
-if [[ "$arriba_visual_script" ]] ; then
+if [[ "${arriba_visual_script,,}" == "true" ]] ; then
     mkdir -p /home/dnanexus/out/arriba_visualisations/
 
     samtools index -b in/bam/${bam_name}

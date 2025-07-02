@@ -1,9 +1,12 @@
 {
   "name": "eggd_arriba",
   "title": "eggd_arriba",
-  "summary": "App which runs Arriba.",
+  "summary": "App which runs Arriba",
   "dxapi": "1.0.0",
-  "version": "1.0.0",
+  "version": "1.2.0",
+  "whatsNew": {
+    "v1.2.0": "Fixed Issue #8; Improved job logs"
+  },
   "inputSpec": [
     {
       "name": "arriba_tar",
