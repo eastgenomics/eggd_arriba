@@ -26,6 +26,16 @@
       "help": "RNA-Seq BAM file from starfusion containing chimeric junctions for fusion detection"
     },
     {
+      "name": "index",
+      "label": "index",
+      "class": "file",
+      "optional": false,
+      "patterns": [
+        "*.bai"
+      ],
+      "help": "RNA-Seq BAM Index file from starfusion"
+    },
+    {
       "name": "genome_lib",
       "label": "genome_lib",
       "class": "file",
@@ -72,14 +82,6 @@
         "hours": 4
       }
     },
-    "assetDepends": [
-      {
-        "name": "htslib",
-        "project": "project-Fkb6Gkj433GVVvj73J7x8KbV",
-        "folder": "/app_assets/htslib/htslib_v1.15.0",
-        "version": "1.15.0"
-      }
-    ],
     "interpreter": "bash",
     "file": "src/code.sh",
     "release": "20.04",
@@ -99,7 +101,7 @@
     "aws:eu-central-1": {
       "systemRequirements": {
         "*": {
-          "instanceType": "mem1_ssd1_v2_x36"
+          "instanceType": "mem1_ssd1_v2_x8"
         }
       }
     }

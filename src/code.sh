@@ -16,13 +16,11 @@ dx-download-all-inputs
 
 mkdir -p /home/dnanexus/out/arriba_full \
     /home/dnanexus/out/arriba_discarded \
-    /home/dnanexus/genome_lib
+    /home/dnanexus/genome_lib \
+    /home/dnanexus/input
 
-# samtools in htslib doesn't work as its missing a library, so
-# will install the missing libraries from the downloaded deb files
-# (so as to not use internet)
-sudo dpkg -i libtinfo5_6.2-0ubuntu2_amd64.deb
-sudo dpkg -i libncurses5_6.2-0ubuntu2_amd64.deb
+# move bam and index to /input
+find ~/in -type f -name "*.bam*" -print0 | xargs -0 -I {} mv {} ~/input
 
 # Unpack CTAT bundle file
 tar xvzf /home/dnanexus/in/genome_lib/*.tar.gz -C /home/dnanexus/genome_lib
@@ -45,7 +43,7 @@ known_fusions=$(docker run --rm -v /home/dnanexus:/data $DOCKER_IMAGE_ID /bin/ba
 sample_name=$(echo $bam_prefix | cut -d '.' -f 1)
 
 # Run arriba
-docker_cmd="${arriba_version}/arriba -x /data/in/bam/$bam_name \
+docker_cmd="${arriba_version}/arriba -x /data/input/$bam_name \
     -o /data/out/arriba_full/${sample_name}_fusions.tsv \
     -O /data/out/arriba_discarded/${sample_name}_fusions.discarded.tsv \
     -g /data/genome_lib/${lib_dir}/ctat_genome_lib_build_dir/ref_annot.gtf \
@@ -63,11 +61,9 @@ time docker run --rm \
 if [[ "${arriba_visual_script,,}" == "true" ]] ; then
     mkdir -p /home/dnanexus/out/arriba_visualisations/
 
-    samtools index -b in/bam/${bam_name}
-
     docker_cmd_visualisation="${arriba_version}/draw_fusions.R \
         --fusions=/data/out/arriba_full/${sample_name}_fusions.tsv \
-        --alignments=/data/in/bam/${bam_name} \
+        --alignments=/data/input/${bam_name} \
         --output=/data/out/arriba_visualisations/${sample_name}_fusions.pdf \
         --annotation=/data/genome_lib/${lib_dir}/ctat_genome_lib_build_dir/ref_annot.gtf \
         --cytobands=/${arriba_version}/database/${cytobands_file} \
