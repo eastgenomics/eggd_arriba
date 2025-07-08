@@ -62,7 +62,7 @@ if [[ "${arriba_visual_script,,}" == "true" ]] ; then
     mkdir -p /home/dnanexus/out/arriba_visualisations/
 
     docker_cmd_visualisation="${arriba_version}/draw_fusions.R \
-        --fusions=/data/out/arriba_full/${sample_name}_fusions.tsv \
+        --fusions=/data/in/starfusion/${starfusion_name} \
         --alignments=/data/input/${bam_name} \
         --output=/data/out/arriba_visualisations/${sample_name}_fusions.pdf \
         --annotation=/data/genome_lib/${lib_dir}/ctat_genome_lib_build_dir/ref_annot.gtf \
