@@ -67,7 +67,7 @@ _download_and_setup() {
         /home/dnanexus/genome_lib \
         /home/dnanexus/input
 
-    /usr/bin/time -v dx-download-all-inputs --parallel
+    time dx-download-all-inputs --parallel
 
     dpkg -i sysstat_12.2.0-2ubuntu0.3_amd64.deb
     dpkg -i parallel_20161222-1.1_all.deb
@@ -163,7 +163,7 @@ main() {
 
     # Run the visualisation if requested by user
     if [[ "${arriba_visual_script,,}" == "true" ]]; then
-        if [[ $(cat in/starfusion/${starfusion_name} | wc -l) -ge 2 ]]; then
+        if [[ $(wc -l < in/starfusion/${starfusion_name}) -ge 2 ]]; then
             _setup_arriba_visualisation
 
             # run Arriba to generate visualisations in parallel
