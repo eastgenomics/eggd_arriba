@@ -117,7 +117,7 @@ _setup_arriba_visualisation() {
     header=$(head -n1 in/starfusion/${starfusion_name})
 
     sed -i '1d' in/starfusion/${starfusion_name}
-    split -n r/$(nproc --all) -e in/starfusion/${starfusion_name} split_fusions/
+    split -n l/$(nproc --all) -e in/starfusion/${starfusion_name} split_fusions/
     find split_fusions/ -type f -exec sed -i "1 i $header" {} \;
 
     echo "$(wc -l < in/starfusion/${starfusion_name}) fusions to generate plots for, splitting across $(nproc --all) processes"
