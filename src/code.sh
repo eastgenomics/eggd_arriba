@@ -101,6 +101,31 @@ _call_arriba() {
             -p /${arriba_version}/database/${protein_domains_file}"
 }
 
+_annotate_fusions() {
+    : '''
+    Annotate fusions with exon numbers.
+
+    The script requires at least the header and one fusion line to run.
+    If there are fusions, it will run the annotation script and replace
+    the original fusions file with the annotated one.
+    '''
+    local fusions_file="out/arriba_full/${sample_name}_fusions.tsv"
+    local annotated_fusions_file="out/arriba_full/${sample_name}_fusions.annotated.tsv"
+    local gtf_file="/data/genome_lib/${lib_dir}/ctat_genome_lib_build_dir/ref_annot.gtf"
+    local annotation_script="/${arriba_version}/scripts/annotate_exon_numbers.sh"
+
+    if [[ $(wc -l < "$fusions_file") -ge 2 ]]; then
+        echo "Annotating fusions with exon numbers"
+
+        docker run --rm -v /home/dnanexus:/data "$docker_image_id" /bin/bash -c \
+            "${annotation_script} /data/${fusions_file} ${gtf_file} /data/${annotated_fusions_file}"
+
+        mv "$annotated_fusions_file" "$fusions_file"
+    else
+        echo "No fusions found, skipping annotation."
+    fi
+}
+
 _setup_arriba_visualisation() {
     : '''
     Setup for calling Arriba visualisation.
@@ -113,14 +138,18 @@ _setup_arriba_visualisation() {
             /home/dnanexus/split_pdfs \
             /home/dnanexus/visualisation_logs
 
+    local fusions_file="out/arriba_full/${sample_name}_fusions.tsv"
     local header
-    header=$(head -n1 out/arriba_full/${sample_name}_fusions.tsv)
 
-    sed -i '1d' out/arriba_full/${sample_name}_fusions.tsv
-    split -n l/$(nproc --all) -e out/arriba_full/${sample_name}_fusions.tsv split_fusions/
+    header=$(head -n1 "$fusions_file")
+
+    sed -i '1d' "$fusions_file"
+    split -n l/$(nproc --all) -e "$fusions_file" split_fusions/
     find split_fusions/ -type f -exec sed -i "1 i $header" {} \;
 
-    echo "$(wc -l < out/arriba_full/${sample_name}_fusions.tsv) fusions to generate plots for, splitting across $(nproc --all) processes"
+    echo "$(wc -l < "$fusions_file") fusions to generate plots for, splitting across $(nproc --all) processes"
+
+    sed -i "1 i $header" "$fusions_file"
 }
 
 _call_arriba_visualisation() {
@@ -160,6 +189,7 @@ main() {
     _download_and_setup
     _set_env
     _call_arriba
+    _annotate_fusions
 
     # Run the visualisation if requested by user
     if [[ "${arriba_visual_script,,}" == "true" ]]; then
