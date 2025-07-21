@@ -105,7 +105,7 @@ _setup_arriba_visualisation() {
     : '''
     Setup for calling Arriba visualisation.
 
-    Splits out star fusion calls to equal length files for number of CPU cores available with
+    Splits out fusion calls to equal length files for number of CPU cores available with
     original header for calling visualisation script in parallel.
     '''
     mkdir -p /home/dnanexus/out/arriba_visualisations/ \
@@ -114,13 +114,13 @@ _setup_arriba_visualisation() {
             /home/dnanexus/visualisation_logs
 
     local header
-    header=$(head -n1 in/starfusion/${starfusion_name})
+    header=$(head -n1 out/arriba_full/${sample_name}_fusions.tsv)
 
-    sed -i '1d' in/starfusion/${starfusion_name}
-    split -n l/$(nproc --all) -e in/starfusion/${starfusion_name} split_fusions/
+    sed -i '1d' out/arriba_full/${sample_name}_fusions.tsv
+    split -n l/$(nproc --all) -e out/arriba_full/${sample_name}_fusions.tsv split_fusions/
     find split_fusions/ -type f -exec sed -i "1 i $header" {} \;
 
-    echo "$(wc -l < in/starfusion/${starfusion_name}) fusions to generate plots for, splitting across $(nproc --all) processes"
+    echo "$(wc -l < out/arriba_full/${sample_name}_fusions.tsv) fusions to generate plots for, splitting across $(nproc --all) processes"
 }
 
 _call_arriba_visualisation() {
@@ -163,7 +163,7 @@ main() {
 
     # Run the visualisation if requested by user
     if [[ "${arriba_visual_script,,}" == "true" ]]; then
-        if [[ $(wc -l < in/starfusion/${starfusion_name}) -ge 2 ]]; then
+        if [[ $(wc -l < out/arriba_full/${sample_name}_fusions.tsv) -ge 2 ]]; then
             _setup_arriba_visualisation
 
             # run Arriba to generate visualisations in parallel

@@ -51,16 +51,6 @@
       "class": "boolean",
       "optional": true,
       "help": "Optional output, set to true to generate visualisations of the gene fusions."
-    },
-    {
-      "name": "starfusion",
-      "label": "starfusion",
-      "class": "file",
-      "optional": false,
-      "patterns": [
-        "*.tsv"
-      ],
-      "help": "STAR-Fusion predicted outputs"
     }
   ],
   "outputSpec": [

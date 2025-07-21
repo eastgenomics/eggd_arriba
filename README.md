@@ -11,7 +11,6 @@ The app also produces visualisation plots of fusions predicted.
  - Arriba docker
  - CTAT genome resource
  - Visualisation (boolean true/false)
- - STAR-Fusion predictions
 
 ## What are the outputs?
  - Predicted fusions
