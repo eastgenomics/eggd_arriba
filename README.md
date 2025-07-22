@@ -2,7 +2,7 @@
 
 ## What does this app do?
 
-This app detects gene fusions from STAR aligned BAM files. The BAM file used by arriba must contain split reads or discordant mates. This can be done by running STARaligner with parameter `--chimOutType WithinBAM`.
+This app detects gene fusions from STAR aligned BAM files and annotates them with exon numbers. The BAM file used by arriba must contain split reads or discordant mates. This can be done by running STARaligner with parameter `--chimOutType WithinBAM`.
 
 The app also produces visualisation plots of fusions predicted.
 
@@ -11,10 +11,9 @@ The app also produces visualisation plots of fusions predicted.
  - Arriba docker
  - CTAT genome resource
  - Visualisation (boolean true/false)
- - STAR-Fusion predictions
 
 ## What are the outputs?
- - Predicted fusions
+ - Predicted fusions (annotated with exon numbers)
  - Discarded fusions (fusions that Arriba classified as an artifact or that are also observed in healthy tissue. Useful to check in case a fusion that should have been predicted is not found in the predicted fusions file)
  - Visualisation plots (concatenated into a single pdf file)
 

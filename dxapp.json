@@ -23,7 +23,7 @@
       "patterns": [
         "*.bam"
       ],
-      "help": "RNA-Seq BAM file from starfusion containing chimeric junctions for fusion detection"
+      "help": "RNA-Seq BAM file from STAR containing chimeric junctions for fusion detection"
     },
     {
       "name": "index",
@@ -33,7 +33,7 @@
       "patterns": [
         "*.bai"
       ],
-      "help": "RNA-Seq BAM Index file from starfusion"
+      "help": "RNA-Seq BAM Index file from STAR"
     },
     {
       "name": "genome_lib",
@@ -51,16 +51,6 @@
       "class": "boolean",
       "optional": true,
       "help": "Optional output, set to true to generate visualisations of the gene fusions."
-    },
-    {
-      "name": "starfusion",
-      "label": "starfusion",
-      "class": "file",
-      "optional": false,
-      "patterns": [
-        "*.tsv"
-      ],
-      "help": "STAR-Fusion predicted outputs"
     }
   ],
   "outputSpec": [

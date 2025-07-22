@@ -40,14 +40,14 @@ _set_env() {
         blacklist_file \
         known_fusions \
         sample_name \
-        star_fusion_bam
+        star_bam
 
     # Extract CTAT library filename
     lib_dir=$(find /home/dnanexus/genome_lib -type d -name "*" -mindepth 1 -maxdepth 1 | rev | cut -d'/' -f-1 | rev)
 
     # Extract sample name from input_bam
     sample_name=$(echo $bam_prefix | cut -d '.' -f 1)
-    star_fusion_bam="$bam_name"
+    star_bam="$bam_name"
 
     docker_image_id=$(docker images --format="{{.Repository}} {{.ID}}" | grep "^uhrigs/arriba" | cut -d' ' -f2)
 
@@ -101,11 +101,36 @@ _call_arriba() {
             -p /${arriba_version}/database/${protein_domains_file}"
 }
 
+_annotate_fusions() {
+    : '''
+    Annotate fusions with exon numbers.
+
+    The script requires at least the header and one fusion line to run.
+    If there are fusions, it will run the annotation script and replace
+    the original fusions file with the annotated one.
+    '''
+    local fusions_file="out/arriba_full/${sample_name}_fusions.tsv"
+    local annotated_fusions_file="out/arriba_full/${sample_name}_fusions.annotated.tsv"
+    local gtf_file="/data/genome_lib/${lib_dir}/ctat_genome_lib_build_dir/ref_annot.gtf"
+    local annotation_script="/${arriba_version}/scripts/annotate_exon_numbers.sh"
+
+    if [[ $(wc -l < "$fusions_file") -ge 2 ]]; then
+        echo "Annotating fusions with exon numbers"
+
+        docker run --rm -v /home/dnanexus:/data "$docker_image_id" /bin/bash -c \
+            "${annotation_script} /data/${fusions_file} ${gtf_file} /data/${annotated_fusions_file}"
+
+        mv "$annotated_fusions_file" "$fusions_file"
+    else
+        echo "No fusions found, skipping annotation."
+    fi
+}
+
 _setup_arriba_visualisation() {
     : '''
     Setup for calling Arriba visualisation.
 
-    Splits out star fusion calls to equal length files for number of CPU cores available with
+    Splits out fusion calls to equal length files for number of CPU cores available with
     original header for calling visualisation script in parallel.
     '''
     mkdir -p /home/dnanexus/out/arriba_visualisations/ \
@@ -113,14 +138,18 @@ _setup_arriba_visualisation() {
             /home/dnanexus/split_pdfs \
             /home/dnanexus/visualisation_logs
 
+    local fusions_file="out/arriba_full/${sample_name}_fusions.tsv"
     local header
-    header=$(head -n1 in/starfusion/${starfusion_name})
 
-    sed -i '1d' in/starfusion/${starfusion_name}
-    split -n l/$(nproc --all) -e in/starfusion/${starfusion_name} split_fusions/
+    header=$(head -n1 "$fusions_file")
+
+    sed -i '1d' "$fusions_file"
+    split -n l/$(nproc --all) -e "$fusions_file" split_fusions/
     find split_fusions/ -type f -exec sed -i "1 i $header" {} \;
 
-    echo "$(wc -l < in/starfusion/${starfusion_name}) fusions to generate plots for, splitting across $(nproc --all) processes"
+    echo "$(wc -l < "$fusions_file") fusions to generate plots for, splitting across $(nproc --all) processes"
+
+    sed -i "1 i $header" "$fusions_file"
 }
 
 _call_arriba_visualisation() {
@@ -143,7 +172,7 @@ _call_arriba_visualisation() {
 
     command="${arriba_version}/draw_fusions.R \
             --fusions=/data/${file} \
-            --alignments=/data/input/${star_fusion_bam} \
+            --alignments=/data/input/${star_bam} \
             --output=/data/split_pdfs/${output_suffix}_fusions.pdf \
             --annotation=/data/genome_lib/${lib_dir}/ctat_genome_lib_build_dir/ref_annot.gtf \
             --cytobands=/${arriba_version}/database/${cytobands_file} \
@@ -160,10 +189,11 @@ main() {
     _download_and_setup
     _set_env
     _call_arriba
+    _annotate_fusions
 
     # Run the visualisation if requested by user
     if [[ "${arriba_visual_script,,}" == "true" ]]; then
-        if [[ $(wc -l < in/starfusion/${starfusion_name}) -ge 2 ]]; then
+        if [[ $(wc -l < out/arriba_full/${sample_name}_fusions.tsv) -ge 2 ]]; then
             _setup_arriba_visualisation
 
             # run Arriba to generate visualisations in parallel
