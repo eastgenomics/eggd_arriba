@@ -40,14 +40,14 @@ _set_env() {
         blacklist_file \
         known_fusions \
         sample_name \
-        star_fusion_bam
+        star_bam
 
     # Extract CTAT library filename
     lib_dir=$(find /home/dnanexus/genome_lib -type d -name "*" -mindepth 1 -maxdepth 1 | rev | cut -d'/' -f-1 | rev)
 
     # Extract sample name from input_bam
     sample_name=$(echo $bam_prefix | cut -d '.' -f 1)
-    star_fusion_bam="$bam_name"
+    star_bam="$bam_name"
 
     docker_image_id=$(docker images --format="{{.Repository}} {{.ID}}" | grep "^uhrigs/arriba" | cut -d' ' -f2)
 
@@ -172,7 +172,7 @@ _call_arriba_visualisation() {
 
     command="${arriba_version}/draw_fusions.R \
             --fusions=/data/${file} \
-            --alignments=/data/input/${star_fusion_bam} \
+            --alignments=/data/input/${star_bam} \
             --output=/data/split_pdfs/${output_suffix}_fusions.pdf \
             --annotation=/data/genome_lib/${lib_dir}/ctat_genome_lib_build_dir/ref_annot.gtf \
             --cytobands=/${arriba_version}/database/${cytobands_file} \
